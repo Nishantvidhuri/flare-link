@@ -3,7 +3,6 @@ import Task from './components/Task';
 import './index.css';
 
 function App() {
-  // State to manage tasks and other input fields
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('Low');
@@ -14,18 +13,15 @@ function App() {
   const [isSortPopupOpen, setIsSortPopupOpen] = useState(false);
   const [hideCompleted, setHideCompleted] = useState(false);
 
-  // Load tasks from localStorage on initial render
   useEffect(() => {
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     setTasks(savedTasks);
   }, []);
 
-  // Save tasks to localStorage whenever tasks array changes
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  // Adds a new task with current title and priority, resets input fields
   const addTask = () => {
     if (title.trim()) {
       setTasks([...tasks, { id: Date.now(), title, priority, completed: false }]);
@@ -35,10 +31,8 @@ function App() {
     }
   };
 
-  // Deletes a task by its ID
   const deleteTask = (id) => setTasks(tasks.filter((task) => task.id !== id));
 
-  // Toggles the completion status of a task
   const toggleComplete = (id) => {
     setTasks(
       tasks.map((task) =>
@@ -47,13 +41,11 @@ function App() {
     );
   };
 
-  // Sets sorting criteria for tasks based on field and order
   const handleSort = (field, order) => {
     setSortCriteria({ field, order });
     setIsSortPopupOpen(false);
   };
 
-  // Filters and sorts tasks based on search, priority, and completion criteria
   const filteredTasks = tasks
     .filter((task) => task.title.toLowerCase().includes(search.toLowerCase()))
     .filter((task) => priorityFilter === 'All' || task.priority === priorityFilter)
@@ -169,7 +161,7 @@ function App() {
       </div>
 
       {/* Sort popup for organizing tasks */}
-      <div className="relative ml-4">
+      <div className="relative ml-4 sm:ml-0">
         <button
           onClick={() => setIsSortPopupOpen((prev) => !prev)}
           className="text-gray-400 hover:text-gray-100"
@@ -178,8 +170,13 @@ function App() {
         </button>
 
         {isSortPopupOpen && (
-          <div className="absolute top-0 right-0 sm:left-full bg-gray-800 shadow-md rounded p-3 w-40 sm:w-48 z-50 mt-2 text-gray-200">
-            <p className="text-sm font-bold mb-2">Sort By:</p>
+          <div className="absolute top-0 sm:right-0 right-6 sm:left-full bg-gray-800 shadow-md rounded p-3 w-40 sm:w-48 z-50 mt-2 text-gray-200">
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-sm font-bold">Sort By:</p>
+              <button onClick={() => setIsSortPopupOpen(false)} className="text-gray-500 hover:text-gray-300">
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
             <button
               onClick={() => handleSort('Priority', 'asc')}
               className="w-full text-left px-2 py-1 hover:bg-gray-700"
