@@ -12,8 +12,7 @@ A responsive Task Manager built with React, utilizing local storage for persiste
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Demo
 
